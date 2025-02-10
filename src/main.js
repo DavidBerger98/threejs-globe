@@ -1,3 +1,4 @@
+var globeContainer = document.getElementById("globe-container");
 var canvas = document.getElementById("globe");
 var RADIUS = 10;
 var earthTexture =
@@ -75,7 +76,8 @@ if ( isPerspective ) gl_PointSize *= ( scale / - mvPosition.z );
 #include <fog_vertex>
 }`;
 class Globe {
-  constructor(canvas, nrOfPoints = 100000) {
+  constructor(container, canvas, nrOfPoints = 100000) {
+    this.container = container;
     this.canvas = canvas;
     this.nrOfPoints = nrOfPoints;
     this.scene = undefined;
@@ -93,10 +95,10 @@ class Globe {
   }
 
   resize() {
-    this.camera.aspect = window.innerWidth / window.outerHeight;
+    this.camera.aspect = this.container.offsetWidth / this.container.offsetHeight;
     this.camera.updateProjectionMatrix();
-    this.renderer.setSize(window.innerWidth, window.outerHeight);
-    // this.renderer2D.setSize(window.innerWidth, window.outerHeight);
+    this.renderer.setSize(this.container.offsetWidth, this.container.offsetHeight);
+    // this.renderer2D.setSize(wthis.container.offsetWidth, this.container.offsetHeight);
   }
 
   animationLoop() {
@@ -204,4 +206,4 @@ if (device.isMobileOrTablet) {
   canvas.style.pointerEvents = "none";
 }
 var nrOfPoints = (device.isMobileOrTablet || device.isApple) ? 10000 : 100000;
-var globe = new Globe(canvas, nrOfPoints);
+var globe = new Globe(globeContainer, canvas, nrOfPoints);
